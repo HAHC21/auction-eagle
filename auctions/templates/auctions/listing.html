@@ -1,0 +1,71 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    <h1>{{ data.title }}</h1>
+    {% if data.listing_status == 1 %}
+        <p>Status: Open</p>
+        {% if user.is_authenticated and current_user == data.author %}
+            <p><a href="../close_listing?id={{ data.identifier }}">Close this listing</a></p>
+        {% endif %}
+    {% else %}
+        <p>Status: Closed</p>
+        <p>Winner: {{ data.current_winner }} </p>
+        {% if current_user == data.current_winner %}
+            <p>{{ current_user }}, you have won this auction!</p>
+        {% endif %}
+        {% if user.is_authenticated and current_user == data.author %}
+            <p><a href="../open_listing?id={{ data.identifier }}">Reopen listing</a></p>
+        {% endif %}
+    {% endif %}
+    {% if user.is_authenticated %}
+            {% if on_watchlist %}
+                <p><a href="../watchlist?mode=remove&id={{ data.identifier }}">Remove from Watchlist</a></p>
+            {% elif current_user != data.author %}
+                {% if data.listing_status == 1 %}
+                    <p><a href="../watchlist?mode=add&id={{ data.identifier }}">Add to Watchlist</a></p>
+                {% else %} 
+                {% endif %}
+            {% elif current_user == data.author %}
+            {% endif %}
+    {% endif %}
+    
+    <h3>by {{ data.author }}</h3>
+    {% if user.is_authenticated and current_user == data.author %}
+        <p>Edit this listing</p>
+    {% endif %}
+    {% if data.current_bid > data.starting_bid  %}
+        <h2>Current Bid: ${{ data.current_bid }} by {{ data.current_winner }}</h2>
+        <h2>Starting Price: ${{ data.starting_bid }}</h2>
+    {% else %}
+        <h2>${{ data.starting_bid }}</h2>
+    {% endif %}
+    {% if user.is_authenticated and current_user != data.author %}
+        {% if bid_placed %}
+        <p><b>Bid successfully placed!</b> <a href="../bid/{{ data.identifier }}">Place another bid</a></p>
+        {% else %}
+            {% if data.listing_status == 1 %}
+                <p><a href="../bid/{{ data.identifier }}">Place a bid</a></p>
+            {% else %}
+            {% endif %}
+        {% endif %}
+    {% endif %}
+    
+    <hr/>
+    <img src="{{ data.image_url }}" width="500px">
+    <p>{{ data.description }}</p>
+    <hr/>
+    <h2>Comments</h2>
+    <ul>
+        {% for comment in comments %}
+        <li>"{{ comment.text }}" by {{ comment.author }}</li>
+        {% endfor %}
+    </ul>
+    {% if data.listing_status == 1 %}
+        {% if user.is_authenticated %}
+        <a href="../new_comment?id={{ data.identifier }}">Add new comment</a>
+        {% endif %}
+    {% else %}
+    {% endif %}
+
+{% endblock %}

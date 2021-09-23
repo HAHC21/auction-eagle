@@ -1,0 +1,31 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<h2>Edit listing</h2>
+
+    <form action="{% url 'edit_listing' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <input class="form-control" autofocus type="text" name="title" placeholder="{{ data.title }}" required>
+        </div>
+        <div class="form-group">
+            <textarea class="form-control" name="description" rows="5" cols="30" required>{{ data.description }}</textarea>
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="text" name="starting_bid" value="{{ data.starting_bid }}" readonly>
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="text" name="image_url" placeholder="{{ data.image_url }}" optional>
+        </div>
+        <div class="form-group">
+            <select name="category" optional>
+                {% for category in categories %}
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <input class="btn btn-primary" type="submit" value="Save Listing">
+    </form>
+
+{% endblock %}

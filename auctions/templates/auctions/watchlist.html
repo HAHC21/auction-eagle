@@ -1,0 +1,14 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    <h1>My Watchlist</h1>
+    {% for item in watchlist %}
+    <h2><a href="/listing/{{ item.identifier }}">{{ item.title }}</a></h2>
+    <h3>${{ item.starting_bid }}</h3>
+    <img src="{{ item.image_url }}" width="500px">
+    <p><a href="../watchlist?mode=remove&id={{ item.identifier }}">Remove from Watchlist</a></p>
+    <hr/>
+    {% endfor %}
+
+{% endblock %}

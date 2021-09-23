@@ -1,0 +1,18 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<h1>Place Bid</h1>
+{% if error %}
+    <p>{{ error }}</p>
+{% endif %}
+<form action="../bid/{{ id }}" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <input class="form-control" autofocus type="text" name="amount" placeholder="Amount (example: 99.67)" required>
+        <input type="hidden" value="{{ id }}" name="id">
+    </div>
+    <input class="btn btn-primary" type="submit" value="Place Bid">
+</form>
+
+{% endblock %}

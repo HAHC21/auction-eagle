@@ -1,0 +1,22 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    {% if category %}
+        <h1>Category: {{ category_name }}</h1>
+    {% else %}
+        <h1>Active Listings</h1>
+    {% endif %}
+    {% for item in data %}
+    <h2><a href="/listing/{{ item.identifier }}">{{ item.title }}</a></h2>
+    {% if item.current_bid > item.starting_bid  %}
+        <h3>Current Bid: ${{ item.current_bid }}</h3>
+    {% else %}
+        <h3>${{ item.starting_bid }}</h3>
+    {% endif %}
+    <h4>by {{ item.author }}</h4>
+    <img src="{{ item.image_url }}" width="500px">
+    <hr/>
+    {% empty %}
+    <p>No active listings.</p>
+    {% endfor %}
+{% endblock %}

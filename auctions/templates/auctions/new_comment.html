@@ -1,0 +1,16 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<h2>Add New Comment</h2>
+
+    <form action="../new_comment" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <input class="form-control" autofocus type="text" name="comment" placeholder="Comment" required>
+            <input type="hidden" value="{{ id }}" name="id">
+        </div>
+        <input class="btn btn-primary" type="submit" value="Save Comment">
+    </form>
+
+{% endblock %}
